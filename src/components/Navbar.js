@@ -1,35 +1,40 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import './Navbar.css';
 
-function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate();
+const NAV_LINKS = [
+  { label: 'Find Doctors', to: '/' },
+  { label: 'Hospitals', to: '/' },
+  { label: 'Medicines', to: '/' },
+  { label: 'Surgeries', to: '/' },
+  { label: 'Software for Provider', to: '/' },
+  { label: 'Facilities', to: '/' },
+];
 
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        <Link to="/" className="navbar-logo">
-          <span className="logo-x">X</span>
-          <span className="logo-medify">medify</span>
+    <header className="navbar">
+      <div className="navbar__inner container">
+        <Link to="/" className="navbar__logo">
+          <span className="logo-m">M</span>edify
         </Link>
 
-        <div className={`navbar-links ${menuOpen ? 'open' : ''}`}>
-          <Link to="/" onClick={() => setMenuOpen(false)}>Find Doctors</Link>
-          <Link to="/" onClick={() => setMenuOpen(false)}>Hospitals</Link>
-          <Link to="/" onClick={() => setMenuOpen(false)}>Medicines</Link>
-          <Link to="/" onClick={() => setMenuOpen(false)}>Surgeries</Link>
-          <Link to="/" onClick={() => setMenuOpen(false)}>Software for Provider</Link>
-          <Link to="/" onClick={() => setMenuOpen(false)}>Facilities</Link>
-          <Link to="/my-bookings" className="bookings-btn" onClick={() => setMenuOpen(false)}>My Bookings</Link>
-        </div>
+        <nav className={`navbar__nav ${open ? 'navbar__nav--open' : ''}`}>
+          {NAV_LINKS.map(l => (
+            <NavLink key={l.label} to={l.to} className="navbar__link" onClick={() => setOpen(false)}>
+              {l.label}
+            </NavLink>
+          ))}
+          <Link to="/my-bookings" className="navbar__cta" onClick={() => setOpen(false)}>
+            My Bookings
+          </Link>
+        </nav>
 
-        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
-          <i className={menuOpen ? 'fas fa-times' : 'fas fa-bars'}></i>
+        <button className="navbar__burger" onClick={() => setOpen(!open)} aria-label="menu">
+          <span /><span /><span />
         </button>
       </div>
-    </nav>
+    </header>
   );
 }
-
-export default Navbar;

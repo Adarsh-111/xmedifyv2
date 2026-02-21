@@ -1,94 +1,84 @@
 .navbar {
   background: #fff;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 1px 0 #E8EDF2;
   position: sticky;
   top: 0;
   z-index: 1000;
 }
 
-.navbar-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 16px 20px;
+.navbar__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 72px;
+  gap: 16px;
 }
 
-.navbar-logo {
-  font-size: 24px;
+.navbar__logo {
+  font-size: 26px;
   font-weight: 800;
-  text-decoration: none;
-}
-
-.logo-x {
-  color: #2AA7FF;
-}
-
-.logo-medify {
   color: #1F2B6C;
+  white-space: nowrap;
 }
 
-.navbar-links {
+.logo-m { color: #2AA7FF; }
+
+.navbar__nav {
   display: flex;
   align-items: center;
   gap: 28px;
+  flex-wrap: wrap;
 }
 
-.navbar-links a {
-  color: #1C2B6C;
+.navbar__link {
   font-size: 14px;
   font-weight: 500;
-  text-decoration: none;
-  transition: color 0.2s;
+  color: #1F2B6C;
+  transition: color 0.18s;
+  white-space: nowrap;
 }
+.navbar__link:hover, .navbar__link.active { color: #2AA7FF; }
 
-.navbar-links a:hover {
-  color: #2AA7FF;
-}
-
-.bookings-btn {
+.navbar__cta {
   background: #2AA7FF;
   color: #fff !important;
-  padding: 10px 24px;
+  padding: 11px 28px;
   border-radius: 50px;
-  font-weight: 600 !important;
-  transition: background 0.2s !important;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.18s;
 }
+.navbar__cta:hover { background: #1A96EE; }
 
-.bookings-btn:hover {
-  background: #1A96EE;
-  color: #fff !important;
-}
-
-.menu-toggle {
+.navbar__burger {
   display: none;
+  flex-direction: column;
+  gap: 5px;
   background: none;
   border: none;
-  font-size: 22px;
-  color: #1F2B6C;
-  cursor: pointer;
+  padding: 4px;
+}
+.navbar__burger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #1F2B6C;
+  border-radius: 2px;
 }
 
-@media (max-width: 900px) {
-  .navbar-links {
+@media (max-width: 960px) {
+  .navbar__burger { display: flex; }
+  .navbar__nav {
     display: none;
     position: absolute;
-    top: 70px;
-    left: 0;
-    right: 0;
+    top: 72px; left: 0; right: 0;
     background: #fff;
     flex-direction: column;
-    padding: 20px;
+    padding: 20px 24px;
     gap: 16px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 20px rgba(0,0,0,.1);
+    align-items: flex-start;
   }
-
-  .navbar-links.open {
-    display: flex;
-  }
-
-  .menu-toggle {
-    display: block;
-  }
+  .navbar__nav--open { display: flex; }
 }

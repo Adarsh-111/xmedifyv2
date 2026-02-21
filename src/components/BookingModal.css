@@ -1,228 +1,81 @@
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
+.bm-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.55);
   z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   padding: 20px;
 }
-
-.modal-box {
+.bm-box {
   background: #fff;
   border-radius: 20px;
-  width: 100%;
-  max-width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
+  width: 100%; max-width: 580px;
+  max-height: 92vh; overflow-y: auto;
   position: relative;
-  padding: 30px;
+  padding: 32px;
 }
+.bm-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: #F1F5F9; border: none;
+  font-size: 15px; color: #555;
+  display: flex; align-items: center; justify-content: center;
+}
+.bm-close:hover { background: #E2E8F0; }
 
-.modal-close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: #f0f0f0;
-  border: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #555;
-}
+.bm-header h2 { font-size: 20px; font-weight: 700; color: #1F2B6C; margin-bottom: 6px; }
+.bm-header p  { font-size: 13px; color: #77829D; display: flex; gap: 6px; align-items: flex-start; }
+.bm-header p i { color: #2AA7FF; margin-top: 2px; }
 
-.modal-close:hover {
-  background: #e0e0e0;
-}
+.bm-body { margin-top: 24px; }
 
-.modal-header h2 {
-  font-size: 20px;
-  font-weight: 700;
-  color: #1F2B6C;
-  margin-bottom: 6px;
-}
+.bm-section-label { font-size: 14px; font-weight: 600; color: #1F2B6C; margin-bottom: 12px; }
 
-.modal-header p {
-  font-size: 13px;
-  color: #666;
-  display: flex;
-  gap: 6px;
-  align-items: flex-start;
-}
+.bm-dates { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 24px; }
 
-.modal-header p i {
-  color: #2AA7FF;
-  margin-top: 2px;
+.bm-date {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  min-width: 58px; padding: 10px 8px;
+  border-radius: 12px; border: 2px solid #E2E8F0;
+  background: #fff; cursor: pointer;
+  transition: all .18s;
 }
+.bm-date:hover { border-color: #2AA7FF; }
+.bm-date--active { background: #2AA7FF; border-color: #2AA7FF; color: #fff; }
+.bm-date__dow { font-size: 11px; font-weight: 500; }
+.bm-date__num { font-size: 20px; font-weight: 700; }
+.bm-date__today {
+  font-size: 9px; font-weight: 700;
+  background: #22C55E; color: #fff;
+  padding: 1px 7px; border-radius: 10px; margin: 0;
+}
+.bm-date--active .bm-date__today { background: rgba(255,255,255,.3); }
 
-.modal-body {
-  margin-top: 24px;
-}
+.bm-period { margin-bottom: 18px; }
+.bm-period__label { font-size: 14px; font-weight: 600; color: #1F2B6C; margin-bottom: 10px; }
+.bm-slots { display: flex; flex-wrap: wrap; gap: 8px; }
 
-.section-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: #1F2B6C;
-  margin-bottom: 12px;
+.bm-slot {
+  padding: 8px 16px; border-radius: 8px;
+  border: 1.5px solid #E2E8F0;
+  background: #fff; font-size: 13px; font-weight: 500; color: #374151;
+  transition: all .18s;
 }
+.bm-slot:hover { border-color: #2AA7FF; color: #2AA7FF; }
+.bm-slot--active { background: #2AA7FF; border-color: #2AA7FF; color: #fff; }
 
-.date-row {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding-bottom: 8px;
-  margin-bottom: 24px;
+.bm-btn {
+  background: #2AA7FF; color: #fff; border: none;
+  padding: 14px 24px; border-radius: 10px;
+  font-size: 15px; font-weight: 600;
+  transition: background .18s;
 }
+.bm-btn--full { width: 100%; margin-top: 20px; }
+.bm-btn:hover { background: #1A96EE; }
+.bm-btn--disabled { background: #CBD5E1; cursor: not-allowed; }
 
-.date-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 16px;
-  border-radius: 12px;
-  border: 2px solid #E8E8E8;
-  background: #fff;
-  cursor: pointer;
-  min-width: 64px;
-  transition: all 0.2s;
-  gap: 4px;
-  position: relative;
-}
-
-.date-btn:hover {
-  border-color: #2AA7FF;
-}
-
-.date-btn.active {
-  background: #2AA7FF;
-  border-color: #2AA7FF;
-  color: #fff;
-}
-
-.date-day {
-  font-size: 11px;
-  font-weight: 500;
-  color: inherit;
-}
-
-.date-num {
-  font-size: 18px;
-  font-weight: 700;
-  color: inherit;
-}
-
-.today-badge {
-  font-size: 9px;
-  background: #2DB77B;
-  color: #fff;
-  padding: 1px 6px;
-  border-radius: 10px;
-  font-weight: 600;
-}
-
-.date-btn.active .today-badge {
-  background: rgba(255,255,255,0.3);
-}
-
-.time-period {
-  margin-bottom: 20px;
-}
-
-.period-label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #1F2B6C;
-  margin-bottom: 10px;
-}
-
-.slots-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.slot-btn {
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1.5px solid #E0E0E0;
-  background: #fff;
-  font-size: 13px;
-  font-weight: 500;
-  color: #333;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.slot-btn:hover {
-  border-color: #2AA7FF;
-  color: #2AA7FF;
-}
-
-.slot-btn.active {
-  background: #2AA7FF;
-  border-color: #2AA7FF;
-  color: #fff;
-}
-
-.confirm-btn {
-  width: 100%;
-  background: #2AA7FF;
-  color: #fff;
-  border: none;
-  padding: 14px;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  margin-top: 20px;
-  transition: background 0.2s;
-}
-
-.confirm-btn:hover {
-  background: #1A96EE;
-}
-
-.confirm-btn.disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-/* Success state */
-.booking-success {
-  text-align: center;
-  padding: 20px 0;
-}
-
-.success-icon {
-  font-size: 64px;
-  color: #2DB77B;
-  margin-bottom: 16px;
-}
-
-.booking-success h2 {
-  font-size: 24px;
-  font-weight: 700;
-  color: #1F2B6C;
-  margin-bottom: 12px;
-}
-
-.booking-success p {
-  font-size: 15px;
-  color: #555;
-  margin-bottom: 8px;
-}
-
-.booking-details-text {
-  font-weight: 600;
-  color: #2AA7FF !important;
-  margin-top: 12px;
-}
-
-.booking-details-text i {
-  margin-right: 4px;
-}
+/* Success */
+.bm-success { text-align: center; padding: 16px 0; }
+.bm-success__icon { font-size: 72px; color: #22C55E; margin-bottom: 16px; }
+.bm-success h2 { font-size: 24px; font-weight: 700; color: #1F2B6C; margin-bottom: 10px; }
+.bm-success p  { font-size: 15px; color: #555; margin-bottom: 8px; }
+.bm-success__details { color: #2AA7FF !important; font-weight: 600; margin-top: 8px; }

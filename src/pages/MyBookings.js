@@ -1,100 +1,91 @@
 import React, { useState, useEffect } from 'react';
 import './MyBookings.css';
 
-function MyBookings() {
+function timeOfDay(time) {
+  if (!time) return 'Morning';
+  const [hStr, rest] = time.split(':');
+  let h = parseInt(hStr);
+  const pm = rest && rest.includes('PM');
+  if (pm && h !== 12) h += 12;
+  if (!pm && h === 12) h = 0;
+  if (h < 12) return 'Morning';
+  if (h < 17) return 'Afternoon';
+  return 'Evening';
+}
+
+export default function MyBookings() {
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem('bookings') || '[]');
-    setBookings(stored);
+    const data = JSON.parse(localStorage.getItem('bookings') || '[]');
+    setBookings(data);
   }, []);
 
-  const cancelBooking = (id) => {
+  const cancel = id => {
     const updated = bookings.filter(b => b.id !== id);
     setBookings(updated);
     localStorage.setItem('bookings', JSON.stringify(updated));
   };
 
-  const getTimeOfDay = (time) => {
-    if (!time) return 'Morning';
-    const hour = parseInt(time.split(':')[0]);
-    const isPM = time.includes('PM');
-    const hour24 = isPM && hour !== 12 ? hour + 12 : (!isPM && hour === 12 ? 0 : hour);
-    if (hour24 < 12) return 'Morning';
-    if (hour24 < 17) return 'Afternoon';
-    return 'Evening';
-  };
-
   return (
-    <main className="my-bookings-page">
-      <div className="bookings-header">
-        <div className="bookings-header-inner">
+    <main className="mb-page">
+      <div className="mb-header">
+        <div className="container">
           <h1>My Bookings</h1>
-          <p>Manage and view all your appointments</p>
+          <p>View and manage all your appointments</p>
         </div>
       </div>
 
-      <div className="bookings-container">
+      <div className="container mb-body">
         {bookings.length === 0 ? (
-          <div className="no-bookings">
-            <i className="fas fa-calendar-times"></i>
+          <div className="mb-empty">
+            <i className="fas fa-calendar-xmark"/>
             <h2>No Bookings Yet</h2>
-            <p>You haven't made any appointments yet. Find medical centers and book your visit.</p>
-            <a href="/" className="find-btn">Find Medical Centers</a>
+            <p>You haven't booked any appointments yet.</p>
+            <a href="/" className="mb-empty__cta">Find Medical Centers</a>
           </div>
         ) : (
-          <div className="bookings-grid">
-            {bookings.map((booking) => (
-              <div key={booking.id} className="booking-card">
-                <div className="booking-card-header">
-                  <div className="booking-hospital-icon">
-                    <i className="fas fa-hospital"></i>
-                  </div>
-                  <div className="booking-hospital-info">
-                    <h3>{booking.hospital.name}</h3>
-                    <p className="booking-address">
-                      <i className="fas fa-map-marker-alt"></i>
-                      {booking.hospital.address}, {booking.hospital.city}, {booking.hospital.state}
+          <div className="mb-grid">
+            {bookings.map(b => (
+              <div key={b.id} className="mb-card">
+                <div className="mb-card__top">
+                  <div className="mb-card__icon"><i className="fas fa-hospital-alt"/></div>
+                  <div>
+                    <h3>{b?.hospital?.name || b?.name || 'Hospital'}</h3>
+                    <p className="mb-card__addr">
+                      <i className="fas fa-location-dot"/>
+                      {[b?.hospital?.address, b?.hospital?.city, b?.hospital?.state].filter(Boolean).join(', ')}
                     </p>
                   </div>
                 </div>
 
-                <div className="booking-details">
-                  <div className="booking-detail-item">
-                    <i className="fas fa-calendar"></i>
+                <div className="mb-card__details">
+                  <div className="mb-card__detail">
+                    <i className="fas fa-calendar-days"/>
                     <div>
-                      <span className="detail-label">Date</span>
-                      <span className="detail-value">{booking.date}</span>
+                      <span className="mb-label">Date</span>
+                      <span className="mb-value">{b.date}</span>
                     </div>
                   </div>
-
-                  <div className="booking-detail-item">
-                    <i className="fas fa-clock"></i>
+                  <div className="mb-card__detail">
+                    <i className="fas fa-clock"/>
                     <div>
-                      <span className="detail-label">Time</span>
-                      <span className="detail-value">{booking.time}</span>
+                      <span className="mb-label">Time</span>
+                      <span className="mb-value">{b.time}</span>
                     </div>
                   </div>
-
-                  <div className="booking-detail-item">
-                    <i className="fas fa-sun"></i>
+                  <div className="mb-card__detail">
+                    <i className="fas fa-sun"/>
                     <div>
-                      <span className="detail-label">Session</span>
-                      <p className="detail-value">{getTimeOfDay(booking.time)}</p>
+                      <span className="mb-label">Session</span>
+                      <p className="mb-value">{timeOfDay(b.time)}</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="booking-footer">
-                  <span className="booking-status">
-                    <i className="fas fa-check-circle"></i> Confirmed
-                  </span>
-                  <button
-                    className="cancel-btn"
-                    onClick={() => cancelBooking(booking.id)}
-                  >
-                    Cancel Booking
-                  </button>
+                <div className="mb-card__footer">
+                  <span className="mb-status"><i className="fas fa-circle-check"/> Confirmed</span>
+                  <button className="mb-cancel" onClick={() => cancel(b.id)}>Cancel</button>
                 </div>
               </div>
             ))}
@@ -104,5 +95,3 @@ function MyBookings() {
     </main>
   );
 }
-
-export default MyBookings;

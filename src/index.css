@@ -1,44 +1,32 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: 'Poppins', sans-serif;
   color: #333;
+  background: #fff;
 }
+
+a { text-decoration: none; color: inherit; }
+button { font-family: 'Poppins', sans-serif; cursor: pointer; }
+ul { list-style: none; }
 
 :root {
   --primary: #2AA7FF;
   --primary-dark: #1A96EE;
-  --secondary: #0E3680;
-  --dark: #1F2B6C;
+  --dark-blue: #1F2B6C;
+  --navy: #0E3680;
   --light-blue: #BFD2F8;
-  --light-bg: #F8FFFE;
-  --gray: #A7A7A7;
-  --light-gray: #F5F5F5;
-  --white: #FFFFFF;
-  --text-dark: #1C2B6C;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-button {
-  cursor: pointer;
-  font-family: 'Poppins', sans-serif;
+  --bg-light: #EEF5FF;
+  --text-gray: #77829D;
+  --white: #ffffff;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
 }
 
-/* Swiper custom */
-.swiper-pagination-bullet-active {
-  background: var(--primary) !important;
-}
+/* Swiper overrides */
+.swiper-pagination-bullet { background: var(--light-blue) !important; opacity: 1 !important; }
+.swiper-pagination-bullet-active { background: var(--primary) !important; }

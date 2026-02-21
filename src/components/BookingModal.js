@@ -2,112 +2,95 @@ import React, { useState } from 'react';
 import './BookingModal.css';
 
 const TIME_SLOTS = {
-  Morning: ['9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM'],
-  Afternoon: ['12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM'],
-  Evening: ['4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM', '6:30 PM'],
+  Morning:   ['9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM'],
+  Afternoon: ['12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM'],
+  Evening:   ['4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM','6:30 PM'],
 };
 
-function BookingModal({ hospital, onClose }) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+export default function BookingModal({ hospital, onClose }) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const week = Array.from({length:7},(_,i) => { const d=new Date(today); d.setDate(today.getDate()+i); return d; });
 
-  // Generate next 7 days
-  const weekDays = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(today);
-    d.setDate(today.getDate() + i);
-    return d;
-  });
+  const [selDate, setSelDate] = useState(week[0]);
+  const [selSlot, setSelSlot] = useState(null);
+  const [booked, setBooked]   = useState(false);
 
-  const [selectedDate, setSelectedDate] = useState(weekDays[0]);
-  const [selectedSlot, setSelectedSlot] = useState(null);
-  const [booked, setBooked] = useState(false);
-
-  const isToday = (date) => {
-    return date.toDateString() === today.toDateString();
-  };
-
-  const formatDate = (date) => {
-    return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-  };
+  const isToday = d => d.toDateString() === today.toDateString();
 
   const handleBook = () => {
-    if (!selectedSlot) return;
-
+    if (!selSlot) return;
     const booking = {
       id: Date.now(),
+      name: hospital['Hospital Name'],
       hospital: {
-        name: hospital['Hospital Name'],
+        name:    hospital['Hospital Name'],
         address: hospital['Address'],
-        city: hospital['City'],
-        state: hospital['State'],
-        zip: hospital['ZIP Code'],
-        rating: hospital['Hospital overall rating'],
+        city:    hospital['City'],
+        state:   hospital['State'],
+        zip:     hospital['ZIP Code'],
+        rating:  hospital['Hospital overall rating'],
       },
-      date: selectedDate.toDateString(),
-      time: selectedSlot,
+      date:     selDate.toDateString(),
+      time:     selSlot,
       bookedAt: new Date().toISOString(),
     };
-
-    const existing = JSON.parse(localStorage.getItem('bookings') || '[]');
-    existing.push(booking);
-    localStorage.setItem('bookings', JSON.stringify(existing));
+    const prev = JSON.parse(localStorage.getItem('bookings') || '[]');
+    localStorage.setItem('bookings', JSON.stringify([...prev, booking]));
     setBooked(true);
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-box" onClick={e => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}>
-          <i className="fas fa-times"></i>
-        </button>
+    <div className="bm-overlay" onClick={onClose}>
+      <div className="bm-box" onClick={e => e.stopPropagation()}>
+        <button className="bm-close" onClick={onClose}><i className="fas fa-times"/></button>
 
         {booked ? (
-          <div className="booking-success">
-            <div className="success-icon">
-              <i className="fas fa-check-circle"></i>
-            </div>
-            <h2>Booking Confirmed!</h2>
-            <p>Your appointment at <strong>{hospital['Hospital Name']}</strong> has been booked.</p>
-            <p className="booking-details-text">
-              <i className="fas fa-calendar"></i> {selectedDate.toDateString()} &nbsp;
-              <i className="fas fa-clock"></i> {selectedSlot}
+          <div className="bm-success">
+            <div className="bm-success__icon"><i className="fas fa-check-circle"/></div>
+            <h2>Appointment Confirmed!</h2>
+            <p><strong>{hospital['Hospital Name']}</strong></p>
+            <p className="bm-success__details">
+              <i className="fas fa-calendar-check"/> {selDate.toDateString()} &nbsp;·&nbsp;
+              <i className="fas fa-clock"/> {selSlot}
             </p>
-            <button className="confirm-btn" onClick={onClose}>Done</button>
+            <button className="bm-btn bm-btn--full" onClick={onClose}>Done</button>
           </div>
         ) : (
           <>
-            <div className="modal-header">
+            <div className="bm-header">
               <h2>{hospital['Hospital Name']}</h2>
-              <p><i className="fas fa-map-marker-alt"></i> {hospital['Address']}, {hospital['City']}, {hospital['State']}</p>
+              <p><i className="fas fa-map-marker-alt"/> {hospital['Address']}, {hospital['City']}, {hospital['State']}</p>
             </div>
 
-            <div className="modal-body">
-              {/* Date Selection */}
-              <div className="section-title">Select Date</div>
-              <div className="date-row">
-                {weekDays.map((day, i) => (
+            <div className="bm-body">
+              {/* Week dates */}
+              <p className="bm-section-label">Select Date</p>
+              <div className="bm-dates">
+                {week.map((day, i) => (
                   <button
                     key={i}
-                    className={`date-btn ${selectedDate.toDateString() === day.toDateString() ? 'active' : ''}`}
-                    onClick={() => { setSelectedDate(day); setSelectedSlot(null); }}
+                    type="button"
+                    className={`bm-date${selDate.toDateString()===day.toDateString()?' bm-date--active':''}`}
+                    onClick={() => { setSelDate(day); setSelSlot(null); }}
                   >
-                    <span className="date-day">{day.toLocaleDateString('en-US', { weekday: 'short' })}</span>
-                    <span className="date-num">{day.getDate()}</span>
-                    {isToday(day) && <span className="today-badge">Today</span>}
+                    <span className="bm-date__dow">{day.toLocaleDateString('en-US',{weekday:'short'})}</span>
+                    <span className="bm-date__num">{day.getDate()}</span>
+                    {isToday(day) && <p className="bm-date__today">Today</p>}
                   </button>
                 ))}
               </div>
 
-              {/* Time Slots */}
+              {/* Time slots */}
               {Object.entries(TIME_SLOTS).map(([period, slots]) => (
-                <div key={period} className="time-period">
-                  <p className="period-label">{period}</p>
-                  <div className="slots-grid">
+                <div key={period} className="bm-period">
+                  <p className="bm-period__label">{period}</p>
+                  <div className="bm-slots">
                     {slots.map(slot => (
                       <button
                         key={slot}
-                        className={`slot-btn ${selectedSlot === slot ? 'active' : ''}`}
-                        onClick={() => setSelectedSlot(slot)}
+                        type="button"
+                        className={`bm-slot${selSlot===slot?' bm-slot--active':''}`}
+                        onClick={() => setSelSlot(slot)}
                       >
                         {slot}
                       </button>
@@ -117,9 +100,9 @@ function BookingModal({ hospital, onClose }) {
               ))}
 
               <button
-                className={`confirm-btn ${!selectedSlot ? 'disabled' : ''}`}
+                className={`bm-btn bm-btn--full${!selSlot?' bm-btn--disabled':''}`}
                 onClick={handleBook}
-                disabled={!selectedSlot}
+                disabled={!selSlot}
               >
                 Book FREE Center Visit
               </button>
@@ -130,5 +113,3 @@ function BookingModal({ hospital, onClose }) {
     </div>
   );
 }
-
-export default BookingModal;

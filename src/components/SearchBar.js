@@ -1,95 +1,98 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SearchBar.css';
 
-function SearchBar() {
+function Dropdown({ id, icon, placeholder, options, value, onChange, disabled }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handler = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  return (
+    <div id={id} className={`sb-dropdown${disabled ? ' sb-dropdown--disabled' : ''}`} ref={ref}>
+      <button
+        type="button"
+        className="sb-dropdown__trigger"
+        onClick={() => !disabled && setOpen(o => !o)}
+      >
+        <i className={`${icon} sb-dropdown__icon`}></i>
+        <span className={value ? 'sb-dropdown__val' : 'sb-dropdown__ph'}>{value || placeholder}</span>
+        <i className={`fas fa-chevron-${open ? 'up' : 'down'} sb-dropdown__arrow`}></i>
+      </button>
+
+      {open && (
+        <ul className="sb-dropdown__list">
+          {options.length === 0
+            ? <li className="sb-dropdown__loading">Loading…</li>
+            : options.map((opt, i) => (
+              <li
+                key={i}
+                className={`sb-dropdown__item${value === opt ? ' sb-dropdown__item--active' : ''}`}
+                onClick={() => { onChange(opt); setOpen(false); }}
+              >
+                {opt}
+              </li>
+            ))
+          }
+        </ul>
+      )}
+    </div>
+  );
+}
+
+export default function SearchBar() {
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
-  const [selectedState, setSelectedState] = useState('');
-  const [selectedCity, setSelectedCity] = useState('');
-  const [loadingStates, setLoadingStates] = useState(false);
-  const [loadingCities, setLoadingCities] = useState(false);
+  const [state, setState] = useState('');
+  const [city, setCity] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    setLoadingStates(true);
     fetch('https://meddata-backend.onrender.com/states')
-      .then(res => res.json())
-      .then(data => {
-        setStates(data);
-        setLoadingStates(false);
-      })
-      .catch(() => setLoadingStates(false));
+      .then(r => r.json()).then(setStates).catch(() => {});
   }, []);
 
   useEffect(() => {
-    if (selectedState) {
-      setLoadingCities(true);
-      setCities([]);
-      setSelectedCity('');
-      fetch(`https://meddata-backend.onrender.com/cities/${selectedState}`)
-        .then(res => res.json())
-        .then(data => {
-          setCities(data);
-          setLoadingCities(false);
-        })
-        .catch(() => setLoadingCities(false));
+    if (state) {
+      setCities([]); setCity('');
+      fetch(`https://meddata-backend.onrender.com/cities/${state}`)
+        .then(r => r.json()).then(setCities).catch(() => {});
     }
-  }, [selectedState]);
+  }, [state]);
 
-  const handleSearch = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
-    if (selectedState && selectedCity) {
-      navigate(`/search?state=${encodeURIComponent(selectedState)}&city=${encodeURIComponent(selectedCity)}`);
-    }
+    if (state && city)
+      navigate(`/search?state=${encodeURIComponent(state)}&city=${encodeURIComponent(city)}`);
   };
 
   return (
-    <form className="search-bar" onSubmit={handleSearch}>
-      <div id="state" className="select-wrapper">
-        <i className="fas fa-map-marker-alt select-icon"></i>
-        <select
-          value={selectedState}
-          onChange={e => setSelectedState(e.target.value)}
-          className="search-select"
-          required
-        >
-          <option value="">Select State</option>
-          {loadingStates ? (
-            <option disabled>Loading...</option>
-          ) : (
-            states.map((s, i) => (
-              <option key={i} value={s}>{s}</option>
-            ))
-          )}
-        </select>
-      </div>
-
-      <div id="city" className="select-wrapper">
-        <i className="fas fa-city select-icon"></i>
-        <select
-          value={selectedCity}
-          onChange={e => setSelectedCity(e.target.value)}
-          className="search-select"
-          required
-          disabled={!selectedState}
-        >
-          <option value="">Select City</option>
-          {loadingCities ? (
-            <option disabled>Loading...</option>
-          ) : (
-            cities.map((c, i) => (
-              <option key={i} value={c}>{c}</option>
-            ))
-          )}
-        </select>
-      </div>
-
-      <button type="submit" id="searchBtn" className="search-btn">
+    <form className="search-bar" onSubmit={handleSubmit}>
+      <Dropdown
+        id="state"
+        icon="fas fa-map-marker-alt"
+        placeholder="State"
+        options={states}
+        value={state}
+        onChange={setState}
+      />
+      <div className="search-bar__divider" />
+      <Dropdown
+        id="city"
+        icon="fas fa-hospital"
+        placeholder="City"
+        options={cities}
+        value={city}
+        onChange={setCity}
+        disabled={!state}
+      />
+      <button type="submit" id="searchBtn" className="search-bar__btn">
         Search
       </button>
     </form>
   );
 }
-
-export default SearchBar;
