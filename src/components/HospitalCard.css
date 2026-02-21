@@ -19,7 +19,7 @@
 
 .hcard__body { flex: 1; display: flex; flex-direction: column; gap: 8px; }
 
-.hcard__name { font-size: 18px; font-weight: 700; color: #1F2B6C; margin: 0; }
+.hcard__name { font-size: 18px; font-weight: 700; color: #1F2B6C; margin: 0; text-transform: lowercase; }
 
 .hcard__addr { font-size: 13px; color: #77829D; display: flex; gap: 6px; align-items: flex-start; }
 .hcard__addr i { color: #2AA7FF; margin-top: 2px; flex-shrink: 0; }
