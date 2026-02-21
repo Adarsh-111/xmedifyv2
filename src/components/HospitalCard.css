@@ -1,0 +1,146 @@
+.hospital-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: box-shadow 0.2s;
+}
+
+.hospital-card:hover {
+  box-shadow: 0 4px 24px rgba(42,167,255,0.15);
+}
+
+.hospital-img-placeholder {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #BFD2F8, #2AA7FF);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hospital-img-placeholder i {
+  font-size: 40px;
+  color: #fff;
+}
+
+.hospital-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hospital-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1F2B6C;
+  margin: 0;
+}
+
+.hospital-address {
+  font-size: 13px;
+  color: #666;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.hospital-address i {
+  color: #2AA7FF;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.hospital-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hospital-badge {
+  background: #E8F7EE;
+  color: #2DB77B;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hospital-badge.blue {
+  background: #E8F4FF;
+  color: #2AA7FF;
+}
+
+.hospital-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.rating-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.star-rating i {
+  font-size: 14px;
+  color: #ddd;
+}
+
+.star-rating i.filled {
+  color: #F5A623;
+}
+
+.rating-text {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
+
+.book-btn {
+  background: #2AA7FF;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.book-btn:hover {
+  background: #1A96EE;
+}
+
+@media (max-width: 600px) {
+  .hospital-card {
+    flex-direction: column;
+  }
+
+  .hospital-img-placeholder {
+    width: 100%;
+    height: 160px;
+  }
+
+  .hospital-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .book-btn {
+    width: 100%;
+  }
+}

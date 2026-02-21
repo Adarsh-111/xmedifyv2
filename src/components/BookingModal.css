@@ -1,0 +1,228 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-box {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  padding: 30px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #f0f0f0;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #555;
+}
+
+.modal-close:hover {
+  background: #e0e0e0;
+}
+
+.modal-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1F2B6C;
+  margin-bottom: 6px;
+}
+
+.modal-header p {
+  font-size: 13px;
+  color: #666;
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.modal-header p i {
+  color: #2AA7FF;
+  margin-top: 2px;
+}
+
+.modal-body {
+  margin-top: 24px;
+}
+
+.section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1F2B6C;
+  margin-bottom: 12px;
+}
+
+.date-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 24px;
+}
+
+.date-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 2px solid #E8E8E8;
+  background: #fff;
+  cursor: pointer;
+  min-width: 64px;
+  transition: all 0.2s;
+  gap: 4px;
+  position: relative;
+}
+
+.date-btn:hover {
+  border-color: #2AA7FF;
+}
+
+.date-btn.active {
+  background: #2AA7FF;
+  border-color: #2AA7FF;
+  color: #fff;
+}
+
+.date-day {
+  font-size: 11px;
+  font-weight: 500;
+  color: inherit;
+}
+
+.date-num {
+  font-size: 18px;
+  font-weight: 700;
+  color: inherit;
+}
+
+.today-badge {
+  font-size: 9px;
+  background: #2DB77B;
+  color: #fff;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.date-btn.active .today-badge {
+  background: rgba(255,255,255,0.3);
+}
+
+.time-period {
+  margin-bottom: 20px;
+}
+
+.period-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1F2B6C;
+  margin-bottom: 10px;
+}
+
+.slots-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.slot-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1.5px solid #E0E0E0;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.slot-btn:hover {
+  border-color: #2AA7FF;
+  color: #2AA7FF;
+}
+
+.slot-btn.active {
+  background: #2AA7FF;
+  border-color: #2AA7FF;
+  color: #fff;
+}
+
+.confirm-btn {
+  width: 100%;
+  background: #2AA7FF;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 20px;
+  transition: background 0.2s;
+}
+
+.confirm-btn:hover {
+  background: #1A96EE;
+}
+
+.confirm-btn.disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Success state */
+.booking-success {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.success-icon {
+  font-size: 64px;
+  color: #2DB77B;
+  margin-bottom: 16px;
+}
+
+.booking-success h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1F2B6C;
+  margin-bottom: 12px;
+}
+
+.booking-success p {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.booking-details-text {
+  font-weight: 600;
+  color: #2AA7FF !important;
+  margin-top: 12px;
+}
+
+.booking-details-text i {
+  margin-right: 4px;
+}
