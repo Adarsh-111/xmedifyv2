@@ -15,6 +15,8 @@ function timeOfDay(time) {
 
 export default function MyBookings() {
   const [bookings, setBookings] = useState([]);
+  const getTime = b => b?.time || b?.bookingTime || '';
+  const getDate = b => b?.date || b?.bookingDate || '';
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem('bookings') || '[]');
@@ -51,10 +53,10 @@ export default function MyBookings() {
                 <div className="mb-card__top">
                   <div className="mb-card__icon"><i className="fas fa-hospital-alt"/></div>
                   <div>
-                    <h3>{b?.hospital?.name || b?.name || 'Hospital'}</h3>
+                    <h3>{b?.['Hospital Name'] || b?.hospital?.name || b?.name || 'Hospital'}</h3>
                     <p className="mb-card__addr">
                       <i className="fas fa-location-dot"/>
-                      {[b?.hospital?.address, b?.hospital?.city, b?.hospital?.state].filter(Boolean).join(', ')}
+                      {[b?.['Address'] || b?.hospital?.address, b?.['City'] || b?.hospital?.city, b?.['State'] || b?.hospital?.state].filter(Boolean).join(', ')}
                     </p>
                   </div>
                 </div>
@@ -64,21 +66,21 @@ export default function MyBookings() {
                     <i className="fas fa-calendar-days"/>
                     <div>
                       <span className="mb-label">Date</span>
-                      <span className="mb-value">{b.date}</span>
+                      <span className="mb-value">{getDate(b)}</span>
                     </div>
                   </div>
                   <div className="mb-card__detail">
                     <i className="fas fa-clock"/>
                     <div>
                       <span className="mb-label">Time</span>
-                      <span className="mb-value">{b.time}</span>
+                      <span className="mb-value">{getTime(b)}</span>
                     </div>
                   </div>
                   <div className="mb-card__detail">
                     <i className="fas fa-sun"/>
                     <div>
                       <span className="mb-label">Session</span>
-                      <p className="mb-value">{timeOfDay(b.time)}</p>
+                      <p className="mb-value">{timeOfDay(getTime(b))}</p>
                     </div>
                   </div>
                 </div>

@@ -21,6 +21,16 @@ export default function BookingModal({ hospital, onClose }) {
     if (!selSlot) return;
     const booking = {
       id: Date.now(),
+      // Flat structure (matches test fixture format)
+      'Hospital Name': hospital['Hospital Name'],
+      'Address':       hospital['Address'],
+      'City':          hospital['City'],
+      'State':         hospital['State'],
+      'ZIP Code':      hospital['ZIP Code'],
+      'Hospital overall rating': hospital['Hospital overall rating'],
+      bookingDate: selDate.toDateString(),
+      bookingTime: selSlot,
+      // Also nested for backwards compat
       name: hospital['Hospital Name'],
       hospital: {
         name:    hospital['Hospital Name'],
